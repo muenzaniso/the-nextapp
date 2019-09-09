@@ -1,0 +1,17 @@
+
+<!DOCTYPE RCC><RCC version="1.0" encoding="" >
+    <qresource>
+        <file alias="file.jpg">file.jpg</file>
+
+        <file alias="savefile.jpg">savefile.jpg</file>
+        <file alias="fuck.jpg">fuck.jpg</file>
+
+        <file alias="openfile.jpg">openfile.jpg</file>
+
+        <file alias="savenew.jpg">savenew.jpg</file>
+
+        <!--<file>help/editmenu.html</file>
+        <file>help/filemenu.html</file>
+        <file>help/index.html</file>-->
+    </qresource>
+</RCC>

@@ -1,0 +1,18 @@
+<!DOCTYPE RCC><RCC version="1.0" encoding="" >
+    
+    <qresource>
+        <file alias="dispense1.jpg">nextappimages/dispence1.jpg</file>
+
+        <file alias="windowicon.jpg">nextappimages/windowicon.jpg</file>
+
+        <file alias="printer.png">nextappimages/printer.png</file>
+
+        <file alias="edit.png">nextappimages/edit.png</file>
+
+        <file alias="quote.png">nextappimages/quote.png</file>
+
+        <file alias="file.png">nextappimages/file.png</file>
+
+
+    </qresource>
+</RCC>

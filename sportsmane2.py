@@ -63,7 +63,7 @@ class MainForm(QtWidgets.QDialog):
 
         # connections
         for tableView in (self.tableView1, self.tableView2):
-            header = tableView.horizontalHeader()#wen we use the custom model we must handle sorting ourselves
+            header = tableView.horizontalHeader()#wen we use the custom model we must handle sorting ourselve
             header.clicked.connect(self.sortTable)
         addShipButton.clicked.connect(self.addShip)
         removeShipButton.clicked.connect(self.removeShip)
