@@ -8,6 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import mysql.connector as mydatab
 
 
 class Ui_MainWindow(object):
@@ -225,7 +226,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if key == QtCore.Qt.Key_Escape:
             self.close()
 
+    def dispense(self):
+        thedatabase = mydatab.connect(
+             host = 'localhost',
+             user = 'muenza',
+             passwd='jpmzcastab29',
+             database='medico'
+        )
+        cursor = thedatabase.cursor()
 
+        querry = "SELECT drug FROM "
 
     def mousePressEvent(self, QMouseEvent):
         #print(QMouseEvent.pos())

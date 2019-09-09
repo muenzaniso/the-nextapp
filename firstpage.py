@@ -1,13 +1,16 @@
 import sys
-from PyQt5.QtWidgets import QWidget, QApplication, QLabel,QLineEdit, QTableView, QPushButton, QGridLayout, QHBoxLayout, QVBoxLayout, QMainWindow, QMessageBox
+from PyQt5.QtWidgets import QWidget, QApplication, QLabel,QLineEdit, QTableView, QPushButton, QGridLayout, QHBoxLayout, QVBoxLayout, QMainWindow, QMessageBox, QCalendarWidget
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import *
 from pagedispense import Ui_MainWindow
+import modelviewfirst
 
 
 class FirstPage(QWidget):
     switch_window = pyqtSignal()
     def __init__(self, parent=None):
         super(FirstPage, self).__init__(parent)
+        #self.model = modelviewfirst.ModelFirst(self.nombre, self.apellidos, self.titilo)
         self.setWindowTitle("Enter Details")
         #self.setGeometry(300, 250, 500, 350)
         self .setFixedSize(800,500)
@@ -38,7 +41,10 @@ class FirstPage(QWidget):
         self.med_aid_edit =QLineEdit('', self)
         self.med_aidno_edit = QLineEdit('', self)
         self.med_aidnopack_edit = QLineEdit('', self)
-        self.birth_edit = QLineEdit('', self)
+        self.birth_edit = QCalendarWidget(self)
+        #self.birth_edit.setGridVisible(True)
+
+
 
         grid = QGridLayout()
         grid.setSpacing(5)
@@ -67,45 +73,72 @@ class FirstPage(QWidget):
         grid.addWidget(birth_label, 4, 2)
         grid.addWidget(self.birth_edit, 4, 3)
 
-        table_view = QTableView()
-        grid.addWidget(table_view, 5, 0, 5, 0)
 
+        self.model = modelviewfirst.ModelFirst()
+        self.table_view = QTableView()
+        self.table_view.setModel(self.model)
+        grid.addWidget(self.table_view, 5, 0, 5, 0)
 
-        save_btn = QPushButton('Save', self)
-        next_btn = QPushButton('Next', self)
-        back_btn = QPushButton('Back', self)
-        cancel_btn = QPushButton('Cancel', self)
-        settings_btn = QPushButton('Settings', self)
-        help_btn = QPushButton('Help', self)
+        self.save_btn = QPushButton('Save', self)
+        self.next_btn = QPushButton('Next', self)
+        self.back_btn = QPushButton('Back', self)
+        self.cancel_btn = QPushButton('Cancel', self)
+        self.settings_btn = QPushButton('Settings', self)
+        self.help_btn = QPushButton('Help', self)
 
-        next_btn.clicked.connect(self.entry)
-        grid.addWidget(save_btn, 10, 0)
-        grid.addWidget(next_btn, 10, 1)
-        grid.addWidget(back_btn, 10, 2)
-        grid.addWidget(cancel_btn, 10, 3)
-        grid.addWidget(settings_btn, 10, 4)
-        grid.addWidget(help_btn, 10, 5)
+        self.next_btn.clicked.connect(self.entry)
+        self.save_btn.clicked.connect(self.savee)
+
+        grid.addWidget(self.save_btn, 10, 0)
+        grid.addWidget(self.next_btn, 10, 1)
+        grid.addWidget(self.back_btn, 10, 2)
+        grid.addWidget(self.cancel_btn, 10, 3)
+        grid.addWidget(self.settings_btn, 10, 4)
+        grid.addWidget(self.help_btn, 10, 5)
+
 
 
         self.setLayout(grid)
+    def resizeColumns(self):
+
+        for column in (modelviewfirst.TITLE, modelviewfirst.NAME,modelviewfirst.SURNAME,
+                       modelviewfirst.DOB, modelviewfirst.PHONE):
+            self.table_view.resizeColumnToContents(column)
 
     def entry(self):
         self.switch_window.emit()
 
+    def savee(self):
 
-'''class Dispense(QWidget):
-    switch_window = pyqtSignal()
+        self.nombre = self.name_edit.text()
+        self.apellidos = self.surname_edit.text()
+        self.titilo = self.title_edit.text()
+        self.ciudad = self.city_edit.text()
+        self.direccion = self.address_edit.text()
+        self.telefono = self.phone_edit.text()
+        self.date = self.birth_edit.selectedDate().toString()
+        self.nacio = self.date
+        print(self.nacio)
+        tabledata = [[self.titilo, self.nombre, self.apellidos, self.nacio, self.telefono,''],
+                     ['', '', '', '', '', ''],
+                     ['', '', '', '', '', ''],
+                     ['', '', '', '', '', ''],
+                     ['', '', '', '', '', ''],
+                     ['', '', '', '', '', ''],
+                     ['', '', '', '', '', ''],
+                     ['', '', '', '', '', '']
 
-    def __init__(self):
-        super(Dispense, self).__init__(parent)
-        self.setWindowTitle("Dispense")
-        # self.setGeometry(300, 250, 500, 350)
-        self.setFixedSize(800, 500)
+                     ]
+        self.model = modelviewfirst.ModelFirst(tabledata)
+        self.table_view.setModel(self.model)
+        for y in (0,1 ,2, 3,4):
 
-        Ui_MainWindow()
-        self.main_window = MainWindow()
-        self.main_window.show()
-        self.main_window.pushButton.clicked(self.main_window.goback)'''
+            index = self.model.index(0, y)
+            row = index.row()
+            column = index.column()
+            value = tabledata[row][column]
+            print(value)
+            return value
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -139,6 +172,8 @@ class Controller:
             QMessageBox.warning(None, '', "Enter at least Surname ")
             return self.entry
         self.dispense.switch_windoww.connect(self.show_reentry)
+        heyy = FirstPage()
+        heyy.savee()
         james = self.entry.name_edit.text()
         zatha = self.entry.surname_edit.text()
         titl = self.entry.title_edit.text()
